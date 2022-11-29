@@ -70,13 +70,13 @@
                         </a>
 
                         <div class="product-action-vertical">
-                          <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                          <a href="#" class="btn-product-icon btn-wishlist btn-expandable" @click="addToWishlist(product)"><span>add to wishlist</span></a>
                           <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                           <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
                         </div><!-- End .product-action-vertical -->
 
                         <div class="product-action">
-                          <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                          <a href="#" class="btn-product btn-cart" @click="addToCart(product)"><span>add to cart</span></a>
                         </div><!-- End .product-action -->
                       </figure><!-- End .product-media -->
 
@@ -88,7 +88,7 @@
                           <a href="product.html">{{ product.attributes.name }}</a>
                         </h3><!-- End .product-title -->
                         <div class="product-price">
-                          &#8358; {{ product.attributes.price }}
+                          &#8358; {{ product.attributes.price.toLowerCase() }}
                         </div><!-- End .product-price -->
                         <div class="ratings-container">
                           <div class="ratings">
@@ -110,6 +110,16 @@
                   </div><!-- End .col-sm-6 -->
                 </div><!-- End .row -->
               </div><!-- End .products -->
+              <div class="overflow-auto align-items-center">
+                <!--                <b-pagination-nav :link-gen="linkGen" :number-of-pages="10" use-router />-->
+                <b-pagination
+                  v-model="currentPage"
+                  class="ml-lg-5"
+                  :total-rows="rows"
+                  :per-page="perPage"
+                  aria-controls="my-table"
+                />
+              </div>
             </div><!-- End .col-lg-9 -->
             <aside class="col-lg-3 order-lg-first">
               <div class="sidebar sidebar-shop">
@@ -130,147 +140,30 @@
                       <div class="filter-items filter-items-count">
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="cat-1" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-1">Dresses</label>
+                            <nuxt-link to="/shop/samsung/watches">
+                              <label class="custom-control-label">Watches</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                           <span class="item-count">3</span>
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="cat-2" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-2">T-shirts</label>
+                            <nuxt-link to="/shop/samsung/buds">
+                              <label class="custom-control-label">Buds</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
-                          <span class="item-count">0</span>
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="cat-3" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-3">Bags</label>
+                            <nuxt-link to="/shop/samsung/tabs">
+                              <label class="custom-control-label">Tabs</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                           <span class="item-count">4</span>
                         </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="cat-4" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-4">Jackets</label>
-                          </div><!-- End .custom-checkbox -->
-                          <span class="item-count">2</span>
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="cat-5" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-5">Shoes</label>
-                          </div><!-- End .custom-checkbox -->
-                          <span class="item-count">2</span>
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="cat-6" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-6">Jumpers</label>
-                          </div><!-- End .custom-checkbox -->
-                          <span class="item-count">1</span>
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="cat-7" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-7">Jeans</label>
-                          </div><!-- End .custom-checkbox -->
-                          <span class="item-count">1</span>
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="cat-8" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="cat-8">Sportwear</label>
-                          </div><!-- End .custom-checkbox -->
-                          <span class="item-count">0</span>
-                        </div><!-- End .filter-item -->
                       </div><!-- End .filter-items -->
-                    </div><!-- End .widget-body -->
-                  </div><!-- End .collapse -->
-                </div><!-- End .widget -->
-
-                <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                    <a data-toggle="collapse" href="#widget-2" role="button" aria-expanded="true" aria-controls="widget-2">
-                      Size
-                    </a>
-                  </h3><!-- End .widget-title -->
-
-                  <div id="widget-2" class="collapse show">
-                    <div class="widget-body">
-                      <div class="filter-items">
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="size-1" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="size-2" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="size-2">S</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="size-3" type="checkbox" class="custom-control-input" checked>
-                            <label class="custom-control-label" for="size-3">M</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="size-4" type="checkbox" class="custom-control-input" checked>
-                            <label class="custom-control-label" for="size-4">L</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="size-5" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="size-5">XL</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="size-6" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="size-6">XXL</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-                      </div><!-- End .filter-items -->
-                    </div><!-- End .widget-body -->
-                  </div><!-- End .collapse -->
-                </div><!-- End .widget -->
-
-                <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                    <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true" aria-controls="widget-3">
-                      Colour
-                    </a>
-                  </h3><!-- End .widget-title -->
-
-                  <div id="widget-3" class="collapse show">
-                    <div class="widget-body">
-                      <div class="filter-colors">
-                        <a href="#" style="background: #b87145;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" style="background: #f0c04a;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" style="background: #333333;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" class="selected" style="background: #cc3333;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" style="background: #3399cc;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" style="background: #669933;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" style="background: #f2719c;"><span class="sr-only">Color Name</span></a>
-                        <a href="#" style="background: #ebebeb;"><span class="sr-only">Color Name</span></a>
-                      </div><!-- End .filter-colors -->
                     </div><!-- End .widget-body -->
                   </div><!-- End .collapse -->
                 </div><!-- End .widget -->
@@ -287,74 +180,52 @@
                       <div class="filter-items">
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="brand-1" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-1">Next</label>
+                            <nuxt-link to="/shop/accessories">
+                              <label class="custom-control-label">Apple</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="brand-2" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-2">River Island</label>
+                            <nuxt-link to="/shop/hp-laptops">
+                              <label class="custom-control-label">HP</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="brand-3" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-3">Geox</label>
+                            <nuxt-link to="/shop/imacs">
+                              <label class="custom-control-label">IMacs</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="brand-4" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-4">New Balance</label>
+                            <nuxt-link to="/shop/speakers/beats">
+                              <label class="custom-control-label">Beats</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="brand-5" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-5">UGG</label>
+                            <nuxt-link to="/shop/iphone">
+                              <label class="custom-control-label">IPhones</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                         </div><!-- End .filter-item -->
 
                         <div class="filter-item">
                           <div class="custom-control custom-checkbox">
-                            <input id="brand-6" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-6">F&F</label>
-                          </div><!-- End .custom-checkbox -->
-                        </div><!-- End .filter-item -->
-
-                        <div class="filter-item">
-                          <div class="custom-control custom-checkbox">
-                            <input id="brand-7" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="brand-7">Nike</label>
+                            <nuxt-link to="/shop/apple-watches">
+                              <label class="custom-control-label">Apple Watches</label>
+                            </nuxt-link>
                           </div><!-- End .custom-checkbox -->
                         </div><!-- End .filter-item -->
                       </div><!-- End .filter-items -->
-                    </div><!-- End .widget-body -->
-                  </div><!-- End .collapse -->
-                </div><!-- End .widget -->
-
-                <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
-                      Price
-                    </a>
-                  </h3><!-- End .widget-title -->
-
-                  <div id="widget-5" class="collapse show">
-                    <div class="widget-body">
-                      <div class="filter-price">
-                        <div class="filter-price-text">
-                          Price Range:
-                          <span id="filter-price-range" />
-                        </div><!-- End .filter-price-text -->
-
-                        <div id="price-slider" /><!-- End #price-slider -->
-                      </div><!-- End .filter-price -->
                     </div><!-- End .widget-body -->
                   </div><!-- End .collapse -->
                 </div><!-- End .widget -->
@@ -376,7 +247,7 @@ export default {
       watches: [],
       api_url: process.env.strapiBaseUri || 'https://servicehub-strapi.herokuapp.com',
       error: null,
-      perPage: 6,
+      perPage: 4,
       currentPage: 1
     }
   },
@@ -387,8 +258,7 @@ export default {
   },
   async mounted () {
     try {
-      // const response = await this.$strapi.$products.find({ populate: '*' })
-      const response = await this.$axios.get('https://servicehub-strapi.herokuapp.com/api/products?populate=*&filters[name][$startsWith]=WATCH')
+      const response = await this.$axios.get('https://servicehub-strapi.herokuapp.com/api/products?populate=*&filters[name][$startsWith]=Watch')
       this.watches = response.data.data
     } catch (e) {
       this.error = e
@@ -397,6 +267,8 @@ export default {
   methods: {
     ...mapMutations({
       addToCart: 'cart/add',
+      addToWishlist: 'wishlist/add',
+      removeFromWishlist: 'wishlist/remove',
       removeFromCart: 'cart/remove'
     })
   }

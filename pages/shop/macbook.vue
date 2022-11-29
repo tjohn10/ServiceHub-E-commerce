@@ -4,7 +4,7 @@
       <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
         <div class="container">
           <h1 class="page-title">
-            iPhones<span>Shop</span>
+            Macbooks<span>Shop</span>
           </h1>
         </div><!-- End .container -->
       </div><!-- End .page-header -->
@@ -12,13 +12,17 @@
         <div class="container">
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href="index.html">Home</a>
+              <nuxt-link to="/">
+                Home
+              </nuxt-link>
             </li>
             <li class="breadcrumb-item">
-              <a href="#">Shop</a>
+              <nuxt-link to="/shop">
+                Shop
+              </nuxt-link>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              iPhones
+              Macbooks
             </li>
           </ol>
         </div><!-- End .container -->
@@ -66,13 +70,13 @@
                         </a>
 
                         <div class="product-action-vertical">
-                          <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                          <a href="#" class="btn-product-icon btn-wishlist btn-expandable" @click="addToWishlist(product)"><span>add to wishlist</span></a>
                           <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                           <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
                         </div><!-- End .product-action-vertical -->
 
                         <div class="product-action">
-                          <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                          <a href="#" class="btn-product btn-cart" @click="addToCart(product)"><span>add to cart</span></a>
                         </div><!-- End .product-action -->
                       </figure><!-- End .product-media -->
 
@@ -84,7 +88,7 @@
                           <a href="product.html">{{ product.attributes.name }}</a>
                         </h3><!-- End .product-title -->
                         <div class="product-price">
-                          &#8358; {{ product.attributes.price }}
+                          &#8358; {{ product.attributes.price.toLocaleString() }}
                         </div><!-- End .product-price -->
                         <div class="ratings-container">
                           <div class="ratings">
@@ -106,6 +110,16 @@
                   </div><!-- End .col-sm-6 -->
                 </div><!-- End .row -->
               </div><!-- End .products -->
+              <div class="overflow-auto align-items-center">
+                <!--                <b-pagination-nav :link-gen="linkGen" :number-of-pages="10" use-router />-->
+                <b-pagination
+                  v-model="currentPage"
+                  class="ml-lg-5"
+                  :total-rows="rows"
+                  :per-page="perPage"
+                  aria-controls="my-table"
+                />
+              </div>
             </div><!-- End .col-lg-9 -->
             <aside class="col-lg-3 order-lg-first">
               <div class="sidebar sidebar-shop">
@@ -377,6 +391,11 @@ export default {
       currentPage: 1
     }
   },
+  computed: {
+    rows () {
+      return this.macbooks.length
+    }
+  },
   async mounted () {
     try {
       const response = await this.$axios.get('https://servicehub-strapi.herokuapp.com/api/products?populate=*&filters[name][$startsWith]=Macbook')
@@ -388,6 +407,8 @@ export default {
   methods: {
     ...mapMutations({
       addToCart: 'cart/add',
+      addToWishlist: 'wishlist/add',
+      removeFromWishlist: 'wishlist/remove',
       removeFromCart: 'cart/remove'
     })
   }

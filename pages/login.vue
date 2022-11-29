@@ -29,15 +29,33 @@
           </ul>
           <div class="tab-content">
             <div id="signin-2" class="tab-pane fade" role="tabpanel" aria-labelledby="signin-tab-2">
-              <form action="#">
+              <form @submit.prevent="handleLogin">
+                <div v-if="err" class="uk-alert-danger" uk-alert>
+                  <a class="uk-alert-close" uk-close />
+                  <p>{{ err.message }}</p>
+                </div>
                 <div class="form-group">
                   <label for="singin-email-2">Username or email address *</label>
-                  <input id="singin-email-2" type="text" class="form-control" name="singin-email" required>
+                  <input
+                    id="singin-email-2"
+                    v-model="email"
+                    type="text"
+                    class="form-control"
+                    name="singin-email"
+                    required
+                  >
                 </div><!-- End .form-group -->
 
                 <div class="form-group">
                   <label for="singin-password-2">Password *</label>
-                  <input id="singin-password-2" type="password" class="form-control" name="singin-password" required>
+                  <input
+                    id="singin-password-2"
+                    v-model="password"
+                    type="password"
+                    class="form-control"
+                    name="singin-password"
+                    required
+                  >
                 </div><!-- End .form-group -->
 
                 <div class="form-footer">
@@ -54,36 +72,42 @@
                   <a href="#" class="forgot-link">Forgot Your Password?</a>
                 </div><!-- End .form-footer -->
               </form>
-              <div class="form-choice">
-                <p class="text-center">
-                  or sign in with
-                </p>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <a href="#" class="btn btn-login btn-g">
-                      <i class="icon-google" />
-                      Login With Google
-                    </a>
-                  </div><!-- End .col-6 -->
-                  <div class="col-sm-6">
-                    <a href="#" class="btn btn-login btn-f">
-                      <i class="icon-facebook-f" />
-                      Login With Facebook
-                    </a>
-                  </div><!-- End .col-6 -->
-                </div><!-- End .row -->
-              </div><!-- End .form-choice -->
             </div><!-- .End .tab-pane -->
             <div id="register-2" class="tab-pane fade show active" role="tabpanel" aria-labelledby="register-tab-2">
-              <form action="#">
+              <form @submit.prevent="handleLogin">
                 <div class="form-group">
                   <label for="register-email-2">Your email address *</label>
-                  <input id="register-email-2" type="email" class="form-control" name="register-email" required>
+                  <input
+                    id="register-email-2"
+                    v-model="email"
+                    type="email"
+                    class="form-control"
+                    name="register-email"
+                    required
+                  >
+                </div><!-- End .form-group -->
+                <div class="form-group">
+                  <label for="register-email-2">Your email address *</label>
+                  <input
+                    id="username"
+                    v-model="username"
+                    type="email"
+                    class="form-control"
+                    name="register-email"
+                    required
+                  >
                 </div><!-- End .form-group -->
 
                 <div class="form-group">
                   <label for="register-password-2">Password *</label>
-                  <input id="register-password-2" type="password" class="form-control" name="register-password" required>
+                  <input
+                    id="register-password-2"
+                    v-model="password"
+                    type="password"
+                    class="form-control"
+                    name="register-password"
+                    required
+                  >
                 </div><!-- End .form-group -->
 
                 <div class="form-footer">
@@ -98,25 +122,6 @@
                   </div><!-- End .custom-checkbox -->
                 </div><!-- End .form-footer -->
               </form>
-              <div class="form-choice">
-                <p class="text-center">
-                  or sign in with
-                </p>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <a href="#" class="btn btn-login btn-g">
-                      <i class="icon-google" />
-                      Login With Google
-                    </a>
-                  </div><!-- End .col-6 -->
-                  <div class="col-sm-6">
-                    <a href="#" class="btn btn-login  btn-f">
-                      <i class="icon-facebook-f" />
-                      Login With Facebook
-                    </a>
-                  </div><!-- End .col-6 -->
-                </div><!-- End .row -->
-              </div><!-- End .form-choice -->
             </div><!-- .End .tab-pane -->
           </div><!-- End .tab-content -->
         </div><!-- End .form-tab -->
@@ -126,8 +131,61 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
-  name: 'LoginPage'
+  name: 'LoginPage',
+  data () {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      err: null
+    }
+  },
+  methods: {
+    // Method that will register your users
+    async handleRegister () {
+      try {
+        const { jwt, user } = await this.$http.$post('auth/local/register', {
+          username: this.username,
+          email: this.email,
+          password: this.password
+        })
+        this.setUser({
+          jwt,
+          id: user.id,
+          username: user.username
+        })
+        this.$router.push({
+          path: '/'
+        })
+      } catch (err) {
+        this.err = err.response?.data?.error
+      }
+    },
+    async handleLogin () {
+      try {
+        const { jwt, user } = await this.$http.$post('auth/local', {
+          identifier: this.email,
+          password: this.password
+        })
+        this.setUser({
+          jwt,
+          id: user.id,
+          username: user.username
+        })
+        this.$router.push({
+          path: '/'
+        })
+      } catch (err) {
+        this.err = err.response?.data?.error
+      }
+    },
+    ...mapMutations({
+      setUser: 'auth/setUser'
+    })
+  }
 }
 </script>
 

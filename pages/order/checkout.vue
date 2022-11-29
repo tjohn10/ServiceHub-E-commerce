@@ -23,6 +23,14 @@
           </ol>
         </div><!-- End .container -->
       </nav><!-- End .breadcrumb-nav -->
+      <div v-if="success" class="uk-alert-success">
+        <a class="uk-alert-close" />
+        <p>{{ success.message }}</p>
+      </div>
+      <div v-if="err" class="uk-alert-danger">
+        <a class="uk-alert-close" />
+        <p>{{ err.message }}</p>
+      </div>
 
       <div class="page-content">
         <div class="checkout">
@@ -42,213 +50,74 @@
                   <div class="row">
                     <div class="col-sm-6">
                       <label>First Name *</label>
-                      <input type="text" class="form-control" required>
+                      <input v-model="firstname" type="text" class="form-control" required>
                     </div><!-- End .col-sm-6 -->
 
                     <div class="col-sm-6">
                       <label>Last Name *</label>
-                      <input type="text" class="form-control" required>
+                      <input v-model="lastname" type="text" class="form-control" required>
                     </div><!-- End .col-sm-6 -->
                   </div><!-- End .row -->
 
                   <label>Company Name (Optional)</label>
-                  <input type="text" class="form-control">
+                  <input v-model="company" type="text" class="form-control">
 
                   <label>Country *</label>
-                  <input type="text" class="form-control" required>
+                  <input v-model="country" type="text" class="form-control" required>
 
                   <label>Street address *</label>
-                  <input type="text" class="form-control" placeholder="House number and Street name" required>
-                  <input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..." required>
+                  <input v-model="address" type="text" class="form-control" placeholder="House number and Street name" required>
 
                   <div class="row">
                     <div class="col-sm-6">
                       <label>Town / City *</label>
-                      <input type="text" class="form-control" required>
+                      <input v-model="town" type="text" class="form-control" required>
                     </div><!-- End .col-sm-6 -->
 
                     <div class="col-sm-6">
-                      <label>State / County *</label>
-                      <input type="text" class="form-control" required>
+                      <label>State</label>
+                      <input v-model="state" type="text" class="form-control" required>
                     </div><!-- End .col-sm-6 -->
                   </div><!-- End .row -->
 
                   <div class="row">
                     <div class="col-sm-6">
-                      <label>Postcode / ZIP *</label>
-                      <input type="text" class="form-control" required>
-                    </div><!-- End .col-sm-6 -->
-
-                    <div class="col-sm-6">
                       <label>Phone *</label>
-                      <input type="tel" class="form-control" required>
+                      <input v-model="phone" type="tel" class="form-control" required>
                     </div><!-- End .col-sm-6 -->
                   </div><!-- End .row -->
 
                   <label>Email address *</label>
-                  <input type="email" class="form-control" required>
-
-                  <div class="custom-control custom-checkbox">
-                    <input id="checkout-create-acc" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
-                  </div><!-- End .custom-checkbox -->
-
-                  <div class="custom-control custom-checkbox">
-                    <input id="checkout-diff-address" type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label" for="checkout-diff-address">Ship to a different address?</label>
-                  </div><!-- End .custom-checkbox -->
+                  <input v-model="email" type="email" class="form-control" required>
 
                   <label>Order notes (optional)</label>
-                  <textarea class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery" />
+                  <textarea v-model="notes" class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery" />
                 </div><!-- End .col-lg-9 -->
                 <aside class="col-lg-3">
-                  <div class="summary">
+                  <div>
                     <h3 class="summary-title">
                       Your Order
                     </h3><!-- End .summary-title -->
 
                     <table class="table table-summary">
-                      <thead>
-                        <tr>
-                          <th>Product</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-
                       <tbody>
                         <tr>
-                          <td><a href="#">Beige knitted elastic runner shoes</a></td>
-                          <td>$84.00</td>
+                          <td><Cart :checkout="false" /></td>
                         </tr>
-
-                        <tr>
-                          <td><a href="#">Blue utility pinafore denimdress</a></td>
-                          <td>$76,00</td>
-                        </tr>
-                        <tr class="summary-subtotal">
-                          <td>Subtotal:</td>
-                          <td>$160.00</td>
-                        </tr><!-- End .summary-subtotal -->
-                        <tr>
-                          <td>Shipping:</td>
-                          <td>Free shipping</td>
-                        </tr>
-                        <tr class="summary-total">
-                          <td>Total:</td>
-                          <td>$160.00</td>
-                        </tr><!-- End .summary-total -->
+                        <!--                        <tr>-->
+                        <!--                          <td>Shipping:</td>-->
+                        <!--                          <td>Free shipping</td>-->
+                        <!--                        </tr>-->
+                        <!--                        <tr class="summary-total">-->
+                        <!--                          <td>Total:</td>-->
+                        <!--                          <td></td>-->
+                        <!--                        </tr>&lt;!&ndash; End .summary-total &ndash;&gt;-->
                       </tbody>
                     </table><!-- End .table table-summary -->
 
-                    <div id="accordion-payment" class="accordion-summary">
-                      <div class="card">
-                        <div id="heading-1" class="card-header">
-                          <h2 class="card-title">
-                            <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                              Direct bank transfer
-                            </a>
-                          </h2>
-                        </div><!-- End .card-header -->
-                        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
-                          <div class="card-body">
-                            Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
-                          </div><!-- End .card-body -->
-                        </div><!-- End .collapse -->
-                      </div><!-- End .card -->
-
-                      <div class="card">
-                        <div id="heading-2" class="card-header">
-                          <h2 class="card-title">
-                            <a
-                              class="collapsed"
-                              role="button"
-                              data-toggle="collapse"
-                              href="#collapse-2"
-                              aria-expanded="false"
-                              aria-controls="collapse-2"
-                            >
-                              Check payments
-                            </a>
-                          </h2>
-                        </div><!-- End .card-header -->
-                        <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
-                          <div class="card-body">
-                            Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis.
-                          </div><!-- End .card-body -->
-                        </div><!-- End .collapse -->
-                      </div><!-- End .card -->
-
-                      <div class="card">
-                        <div id="heading-3" class="card-header">
-                          <h2 class="card-title">
-                            <a
-                              class="collapsed"
-                              role="button"
-                              data-toggle="collapse"
-                              href="#collapse-3"
-                              aria-expanded="false"
-                              aria-controls="collapse-3"
-                            >
-                              Cash on delivery
-                            </a>
-                          </h2>
-                        </div><!-- End .card-header -->
-                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-                          <div class="card-body">
-                            Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.
-                          </div><!-- End .card-body -->
-                        </div><!-- End .collapse -->
-                      </div><!-- End .card -->
-
-                      <div class="card">
-                        <div id="heading-4" class="card-header">
-                          <h2 class="card-title">
-                            <a
-                              class="collapsed"
-                              role="button"
-                              data-toggle="collapse"
-                              href="#collapse-4"
-                              aria-expanded="false"
-                              aria-controls="collapse-4"
-                            >
-                              PayPal <small class="float-right paypal-link">What is PayPal?</small>
-                            </a>
-                          </h2>
-                        </div><!-- End .card-header -->
-                        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-                          <div class="card-body">
-                            Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-                          </div><!-- End .card-body -->
-                        </div><!-- End .collapse -->
-                      </div><!-- End .card -->
-
-                      <div class="card">
-                        <div id="heading-5" class="card-header">
-                          <h2 class="card-title">
-                            <a
-                              class="collapsed"
-                              role="button"
-                              data-toggle="collapse"
-                              href="#collapse-5"
-                              aria-expanded="false"
-                              aria-controls="collapse-5"
-                            >
-                              Credit Card (Stripe)
-                              <img src="/static/assets/images/payments-summary.png" alt="payments cards">
-                            </a>
-                          </h2>
-                        </div><!-- End .card-header -->
-                        <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
-                          <div class="card-body">
-                            Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
-                          </div><!-- End .card-body -->
-                        </div><!-- End .collapse -->
-                      </div><!-- End .card -->
-                    </div><!-- End .accordion -->
-
-                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block" @click="initializePaystack">
                       <span class="btn-text">Place Order</span>
-                      <span class="btn-hover-text">Proceed to Checkout</span>
+                      <span class="btn-hover-text">Proceed to Payment</span>
                     </button>
                   </div><!-- End .summary -->
                 </aside><!-- End .col-lg-3 -->
@@ -262,8 +131,75 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
-  name: 'CheckoutComp'
+  name: 'CheckoutComp',
+  data () {
+    return {
+      firstname: '',
+      lastname: '',
+      phone: '',
+      state: '',
+      town: '',
+      country: '',
+      company: '',
+      notes: '',
+      success: null,
+      err: null,
+      address: '',
+      email: '',
+      stripeKey: process.env.stripePublishable,
+      paystackKey: process.env.PAYSTACK_KEY
+    }
+  },
+  computed: {
+    ...mapGetters({
+      username: 'auth/username',
+      token: 'auth/token',
+      selectedProducts: 'cart/items',
+      price: 'cart/price'
+    })
+  },
+  methods: {
+    ...mapMutations({
+      emptyCart: 'cart/emptyList',
+      addToCart: 'cart/add',
+      removeFromCart: 'cart/remove'
+    }),
+    initializePaystack () {
+      const address = this.address
+      const username = this.username
+      this.$paystack({
+        key: 'pk_live_ce185b47a92da127373a07232376a4fff75f0b81', // Replace with your public key.
+        email: this.email,
+        amount: this.$store.getters['cart/price'],
+        ref: '',
+        currency: 'ngn',
+        callback: async () => {
+          try {
+            await this.$http.$post('orders', {
+              data: {
+                address,
+                amount: this.$store.getters['cart/price'],
+                user: username,
+                products: this.$store.getters['cart/items']
+              }
+            })
+            // this.emptyCart()
+            this.success = {
+              message: 'Payment completed successfully'
+            }
+          } catch (err) {
+            this.err = err.response?.data?.error
+          }
+        },
+        onClose: () => {
+          this.$router.push('index')
+        }
+      })
+    }
+  }
 }
 </script>
 

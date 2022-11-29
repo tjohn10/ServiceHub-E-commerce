@@ -1,10 +1,11 @@
-import cookieparser from 'cookieparser'
+// import cookieparser from 'cookieparser'
 export const state = () => ({
   allProducts: [],
   featuredProducts: [],
   iPhoneProducts: [],
   macBooks: [],
-  cartItems: []
+  cartItems: [],
+  wishListItems: []
 })
 
 export const getters = {
@@ -16,6 +17,13 @@ export const getters = {
   iPhoneProducts: state => state.iPhoneProducts,
   macbooks: state => state.macBooks,
   getCart: state => state.cartItems,
+  getWishList: state => state.wishListItems,
+  getWishListTotal: state =>
+    state.wishListItems.length < 1
+      ? '0'
+      : state.wishListItems
+        .map(el => el.price * el.quantity)
+        .reduce((a, b) => a + b),
   getCartTotal: state =>
     state.cartItems.length < 1
       ? '0'
@@ -30,16 +38,16 @@ export const actions = {
   },
   async deleteCartItem ({ commit }, id) {
     await commit('removeCartItem', id)
-  },
-  nuxtServerInit ({ commit }, { req }) {
-    if (req && req.headers && req.headers.cookie) {
-      const parsed = cookieparser.parse(req.headers.cookie)
-      const user = (parsed.user && JSON.parse(parsed.user)) || null
-      const cart = (parsed.cart && JSON.parse(parsed.cart)) || []
-      commit('auth/setUser', user)
-      commit('cart/setItems', cart)
-    }
   }
+  // nuxtServerInit ({ commit }, { req }) {
+  //   if (req && req.headers && req.headers.cookie) {
+  //     // const parsed = cookieparser.parse(req.headers.cookie)
+  //     const user = (parsed.user && JSON.parse(parsed.user)) || null
+  //     const cart = (parsed.cart && JSON.parse(parsed.cart)) || []
+  //     commit('auth/setUser', user)
+  //     commit('cart/setItems', cart)
+  //   }
+  // }
 }
 
 export const mutations = {

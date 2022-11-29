@@ -1,3 +1,4 @@
+const strapiBaseUri = process.env.BASE_URI || 'https://servicehub-strapi.herokuapp.com'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -12,10 +13,15 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/icons/favicon.ico' },
       { rel: 'stylesheet', href: '/assets/css/style.css' },
       { rel: 'stylesheet', href: '/assets/css/skins/skin-demo-4.css' },
       { rel: 'stylesheet', href: '/assets/css/demos/demo-4.css' }
+    ],
+    script: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js' },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' },
+      { src: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' }
     ]
   },
 
@@ -26,7 +32,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', mode: 'client' }
+    { src: '~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', mode: 'client' },
+    { src: 'plugins/owl.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,16 +48,47 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'nuxt-paystack',
+    'bootstrap-vue/nuxt'
   ],
+
+  bootstrapVue: {
+    icons: true
+  },
+  strapi: {
+    url: process.env.BASE_URI || 'https://servicehub-strapi.herokuapp.com/api',
+    entities: ['products', 'orders', 'subscribers']
+  },
+  http: {
+    baseURL: `${strapiBaseUri}/api`,
+    browserBaseURL: `${strapiBaseUri}/api`
+  },
+
+  env: {
+    STRAPI_URL: process.env.BASE_URI || 'https://servicehub-strapi.herokuapp.com/api',
+    PAYSTACK_KEY: process.env.PAYSTACK_KEY
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/'
+    baseURL: process.env.BASE_URI || 'https://servicehub-strapi.herokuapp.com'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    /*
+     ** Run ESLint on save
+     */
+    extend (config, ctx) {
+      if (ctx.dev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    }
   }
 }

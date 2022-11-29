@@ -69,7 +69,7 @@
                   </div>
                 </li>
                 <li>
-                  <nuxt-link to="#signin-modal" data-toggle="modal">
+                  <nuxt-link to="/login" data-toggle="modal">
                     Sign in / Sign up
                   </nuxt-link>
                 </li>
@@ -116,8 +116,10 @@
                   type="search"
                   class="form-control"
                   name="q"
+                  :value="value"
                   placeholder="Search product ..."
                   required
+                  @input="updateValue($event.target.value)"
                 >
               </div><!-- End .header-search-wrapper -->
             </form>
@@ -125,64 +127,11 @@
         </div>
 
         <div class="header-right">
-          <div class="dropdown compare-dropdown">
-            <nuxt-link
-              to="#"
-              class="dropdown-toggle"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              data-display="static"
-              title="Compare Products"
-              aria-label="Compare Products"
-            >
-              <div class="icon">
-                <i class="icon-random" />
-              </div>
-              <p>Compare</p>
-            </nuxt-link>
-
-            <div class="dropdown-menu dropdown-menu-right">
-              <ul class="compare-products">
-                <li class="compare-product">
-                  <nuxt-link to="#" class="btn-remove" title="Remove Product">
-                    <i class="icon-close" />
-                  </nuxt-link>
-                  <h4 class="compare-product-title">
-                    <nuxt-link to="product.html">
-                      Blue Night Dress
-                    </nuxt-link>
-                  </h4>
-                </li>
-                <li class="compare-product">
-                  <nuxt-link to="#" class="btn-remove" title="Remove Product">
-                    <i class="icon-close" />
-                  </nuxt-link>
-                  <h4 class="compare-product-title">
-                    <nuxt-link to="product.html">
-                      White Long Skirt
-                    </nuxt-link>
-                  </h4>
-                </li>
-              </ul>
-
-              <div class="compare-actions">
-                <nuxt-link to="#" class="action-link">
-                  Clear All
-                </nuxt-link>
-                <nuxt-link to="#" class="btn btn-outline-primary-2">
-                  <span>Compare</span><i class="icon-long-arrow-right" />
-                </nuxt-link>
-              </div>
-            </div><!-- End .dropdown-menu -->
-          </div><!-- End .compare-dropdown -->
-
           <div class="wishlist">
-            <nuxt-link to="/wishlist" title="Wishlist">
+            <nuxt-link to="/order/wishlist" title="Wishlist">
               <div class="icon">
                 <i class="icon-heart-o" />
-                <span class="wishlist-count badge">3</span>
+                <span class="wishlist-count badge">{{ noOfWishItems }}</span>
               </div>
               <p>Wishlist</p>
             </nuxt-link>
@@ -200,367 +149,230 @@
             >
               <div class="icon">
                 <i class="icon-shopping-cart" />
-                <span class="cart-count">2</span>
+                <span class="cart-count">{{ numberOfItems }}</span>
               </div>
               <p>Cart</p>
             </nuxt-link>
 
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-cart-products">
-                <div class="product">
-                  <div class="product-cart-details">
-                    <h4 class="product-title">
-                      <nuxt-link to="product.html">
-                        Beige knitted elastic runner shoes
+                <Cart />
+              </div><!-- End .dropdown-menu -->
+            </div><!-- End .cart-dropdown -->
+          </div><!-- End .header-right -->
+        </div><!-- End .container -->
+      </div><!-- End .header-middle -->
+
+      <div id="navbarNavDropdown" class="header-bottom sticky-header">
+        <div class="container">
+          <div class="header-left">
+            <div class="dropdown category-dropdown">
+              <nuxt-link
+                to="#"
+                class="dropdown-toggle"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-display="static"
+                title="Browse Categories"
+              >
+                Browse Categories <i class="icon-angle-down" />
+              </nuxt-link>
+
+              <div class="dropdown-menu">
+                <nav class="side-nav">
+                  <ul class="menu-vertical sf-arrows">
+                    <li class="item-lead">
+                      <nuxt-link to="#">
+                        Daily offers
                       </nuxt-link>
-                    </h4>
-
-                    <span class="cart-product-info">
-                      <span class="cart-product-qty">1</span>
-                      x $84.00
-                    </span>
-                  </div><!-- End .product-cart-details -->
-
-                  <figure class="product-image-container">
-                    <nuxt-link to="product.html" class="product-image">
-                      <img src="/assets/images/products/cart/product-1.jpg" alt="product">
-                    </nuxt-link>
-                  </figure>
-                  <nuxt-link to="#" class="btn-remove" title="Remove Product">
-                    <i class="icon-close" />
-                  </nuxt-link>
-                </div><!-- End .product -->
-
-                <div class="product">
-                  <div class="product-cart-details">
-                    <h4 class="product-title">
-                      <nuxt-link to="product.html">
-                        Blue utility pinafore denim dress
+                    </li>
+                    <li class="item-lead">
+                      <nuxt-link to="#">
+                        Gift Ideas
                       </nuxt-link>
-                    </h4>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/iphone">
+                        iPhones
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/imacs">
+                        iMacs
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/macbook">
+                        Macbooks
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/playstation">
+                        PlayStation
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/samsung">
+                        Samsung
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/speakers">
+                        Speakers
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/accessories">
+                        Accessories
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/ipads">
+                        iPads
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="/shop/hp-laptops">
+                        Laptops
+                      </nuxt-link>
+                    </li>
+                  </ul><!-- End .menu-vertical -->
+                </nav><!-- End .side-nav -->
+              </div><!-- End .dropdown-menu -->
+            </div><!-- End .category-dropdown -->
+          </div><!-- End .header-left -->
 
-                    <span class="cart-product-info">
-                      <span class="cart-product-qty">1</span>
-                      x $76.00
-                    </span>
-                  </div><!-- End .product-cart-details -->
-
-                  <figure class="product-image-container">
-                    <nuxt-link to="product.html" class="product-image">
-                      <img src="/assets/images/products/cart/product-2.jpg" alt="product">
-                    </nuxt-link>
-                  </figure>
-                  <nuxt-link to="#" class="btn-remove" title="Remove Product">
-                    <i class="icon-close" />
+          <div class="header-center">
+            <nav class="main-nav">
+              <ul class="menu sf-arrows justify-content-between">
+                <li class="megamenu-container active">
+                  <nuxt-link to="/" class="">
+                    Home
                   </nuxt-link>
-                </div><!-- End .product -->
-              </div><!-- End .cart-product -->
+                </li>
+                <li>
+                  <nuxt-link to="/shop">
+                    Shop
+                  </nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/shop">
+                    Deals
+                  </nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/installments">
+                    Installments
+                  </nuxt-link>
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <nuxt-link to="about.html" class="sf-with-ul">
+                        About
+                      </nuxt-link>
 
-              <div class="dropdown-cart-total">
-                <span>Total</span>
+                      <ul>
+                        <li>
+                          <nuxt-link to="about.html">
+                            About 01
+                          </nuxt-link>
+                        </li>
+                        <li>
+                          <nuxt-link to="about-2.html">
+                            About 02
+                          </nuxt-link>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <nuxt-link to="contact.html" class="sf-with-ul">
+                        Contact
+                      </nuxt-link>
 
-                <span class="cart-total-price">$160.00</span>
-              </div><!-- End .dropdown-cart-total -->
+                      <ul>
+                        <li>
+                          <nuxt-link to="contact.html">
+                            Contact 01
+                          </nuxt-link>
+                        </li>
+                        <li>
+                          <nuxt-link to="contact-2.html">
+                            Contact 02
+                          </nuxt-link>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <nuxt-link to="login.html">
+                        Login
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="faq.html">
+                        FAQs
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="404.html">
+                        Error 404
+                      </nuxt-link>
+                    </li>
+                    <li>
+                      <nuxt-link to="coming-soon.html">
+                        Coming Soon
+                      </nuxt-link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <nuxt-link to="/blog">
+                    Blog
+                  </nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/contact">
+                    Contacts
+                  </nuxt-link>
+                </li>
+              </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+          </div><!-- End .header-center -->
 
-              <div class="dropdown-cart-action">
-                <nuxt-link to="cart.html" class="btn btn-primary">
-                  View Cart
-                </nuxt-link>
-                <nuxt-link to="checkout.html" class="btn btn-outline-primary-2">
-                  <span>Checkout</span><i class="icon-long-arrow-right" />
-                </nuxt-link>
-              </div><!-- End .dropdown-cart-total -->
-            </div><!-- End .dropdown-menu -->
-          </div><!-- End .cart-dropdown -->
-        </div><!-- End .header-right -->
-      </div><!-- End .container -->
-    </div><!-- End .header-middle -->
-
-    <div id="navbarNavDropdown" class="header-bottom sticky-header">
-      <div class="container">
-        <div class="header-left">
-          <div class="dropdown category-dropdown">
-            <nuxt-link
-              to="#"
-              class="dropdown-toggle"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              data-display="static"
-              title="Browse Categories"
-            >
-              Browse Categories <i class="icon-angle-down" />
-            </nuxt-link>
-
-            <div class="dropdown-menu">
-              <nav class="side-nav">
-                <ul class="menu-vertical sf-arrows">
-                  <li class="item-lead">
-                    <nuxt-link to="#">
-                      Daily offers
-                    </nuxt-link>
-                  </li>
-                  <li class="item-lead">
-                    <nuxt-link to="#">
-                      Gift Ideas
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/iphone">
-                      iPhones
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/imacs">
-                      iMacs
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/macbook">
-                      Macbooks
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/playstation">
-                      PlayStation
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/samsung">
-                      Samsung
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/speakers">
-                      Speakers
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/accessories">
-                      Accessories
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/ipads">
-                      iPads
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/shop/hp-laptops">
-                      Laptops
-                    </nuxt-link>
-                  </li>
-                </ul><!-- End .menu-vertical -->
-              </nav><!-- End .side-nav -->
-            </div><!-- End .dropdown-menu -->
-          </div><!-- End .category-dropdown -->
-        </div><!-- End .header-left -->
-
-        <div class="header-center">
-          <nav class="main-nav">
-            <ul class="menu sf-arrows">
-              <li class="megamenu-container active">
-                <nuxt-link to="/" class="">
-                  Home
-                </nuxt-link>
-              </li>
-              <li>
-                <nuxt-link to="/shop">
-                  Shop
-                </nuxt-link>
-              </li>
-              <li>
-                <ul>
-                  <li>
-                    <nuxt-link to="about.html" class="sf-with-ul">
-                      About
-                    </nuxt-link>
-
-                    <ul>
-                      <li>
-                        <nuxt-link to="about.html">
-                          About 01
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="about-2.html">
-                          About 02
-                        </nuxt-link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <nuxt-link to="contact.html" class="sf-with-ul">
-                      Contact
-                    </nuxt-link>
-
-                    <ul>
-                      <li>
-                        <nuxt-link to="contact.html">
-                          Contact 01
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="contact-2.html">
-                          Contact 02
-                        </nuxt-link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <nuxt-link to="login.html">
-                      Login
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="faq.html">
-                      FAQs
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="404.html">
-                      Error 404
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="coming-soon.html">
-                      Coming Soon
-                    </nuxt-link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <nuxt-link to="blog.html" class="sf-with-ul">
-                  Blog
-                </nuxt-link>
-
-                <ul>
-                  <li>
-                    <nuxt-link to="blog.html">
-                      Classic
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="blog-listing.html">
-                      Listing
-                    </nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="#">
-                      Grid
-                    </nuxt-link>
-                    <ul>
-                      <li>
-                        <nuxt-link to="blog-grid-2cols.html">
-                          Grid 2 columns
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-grid-3cols.html">
-                          Grid 3 columns
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-grid-4cols.html">
-                          Grid 4 columns
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-grid-sidebar.html">
-                          Grid sidebar
-                        </nuxt-link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <nuxt-link to="#">
-                      Masonry
-                    </nuxt-link>
-                    <ul>
-                      <li>
-                        <nuxt-link to="blog-masonry-2cols.html">
-                          Masonry 2 columns
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-masonry-3cols.html">
-                          Masonry 3 columns
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-masonry-4cols.html">
-                          Masonry 4 columns
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-masonry-sidebar.html">
-                          Masonry sidebar
-                        </nuxt-link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <nuxt-link to="#">
-                      Mask
-                    </nuxt-link>
-                    <ul>
-                      <li>
-                        <nuxt-link to="blog-mask-grid.html">
-                          Blog mask grid
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="blog-mask-masonry.html">
-                          Blog mask masonry
-                        </nuxt-link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <nuxt-link to="#">
-                      Single Post
-                    </nuxt-link>
-                    <ul>
-                      <li>
-                        <nuxt-link to="single.html">
-                          Default with sidebar
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="single-fullwidth.html">
-                          Fullwidth no sidebar
-                        </nuxt-link>
-                      </li>
-                      <li>
-                        <nuxt-link to="single-fullwidth-sidebar.html">
-                          Fullwidth with sidebar
-                        </nuxt-link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <nuxt-link to="/contact">
-                  Contacts
-                </nuxt-link>
-              </li>
-            </ul><!-- End .menu -->
-          </nav><!-- End .main-nav -->
-        </div><!-- End .header-center -->
-
-        <div class="header-right">
-          <i class="la la-lightbulb-o" /><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
-        </div>
-      </div><!-- End .container -->
-    </div><!-- End .header-bottom -->
+          <div class="header-right">
+            <i class="la la-lightbulb-o" /><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+          </div>
+        </div><!-- End .container -->
+      </div><!-- End .header-bottom -->
+    </div>
   </header><!-- End .header -->
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
-  name: 'HeaderComp'
+  name: 'HeaderComp',
+  props: {
+    value: String
+  },
+  computed: {
+    ...mapGetters({
+      username: 'auth/username',
+      numberOfItems: 'cart/numberOfItems',
+      noOfWishItems: 'wishlist/numberOfItems'
+    })
+  },
+  methods: {
+    ...mapMutations({
+      logout: 'auth/logout'
+    }),
+    updateValue (value) {
+      this.$emit('input', value)
+    }
+  }
 }
 </script>
 

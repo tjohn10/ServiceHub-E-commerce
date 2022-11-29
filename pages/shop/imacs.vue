@@ -70,13 +70,13 @@
                         </a>
 
                         <div class="product-action-vertical">
-                          <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                          <a href="#" class="btn-product-icon btn-wishlist btn-expandable" @click="addToWishlist(product)"><span>add to wishlist</span></a>
                           <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                           <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
                         </div><!-- End .product-action-vertical -->
 
                         <div class="product-action">
-                          <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                          <a href="#" class="btn-product btn-cart" @click="addToCart(product)"><span>add to cart</span></a>
                         </div><!-- End .product-action -->
                       </figure><!-- End .product-media -->
 
@@ -88,7 +88,7 @@
                           <a href="product.html">{{ product.attributes.name }}</a>
                         </h3><!-- End .product-title -->
                         <div class="product-price">
-                          &#8358; {{ product.attributes.price }}
+                          &#8358; {{ product.attributes.price.toLocaleString() }}
                         </div><!-- End .product-price -->
                         <div class="ratings-container">
                           <div class="ratings">
@@ -110,6 +110,16 @@
                   </div><!-- End .col-sm-6 -->
                 </div><!-- End .row -->
               </div><!-- End .products -->
+              <div class="overflow-auto align-items-center">
+                <!--                <b-pagination-nav :link-gen="linkGen" :number-of-pages="10" use-router />-->
+                <b-pagination
+                  v-model="currentPage"
+                  class="ml-lg-5"
+                  :total-rows="rows"
+                  :per-page="perPage"
+                  aria-controls="my-table"
+                />
+              </div>
             </div><!-- End .col-lg-9 -->
             <aside class="col-lg-3 order-lg-first">
               <div class="sidebar sidebar-shop">
@@ -377,7 +387,7 @@ export default {
       macs: [],
       api_url: process.env.strapiBaseUri || 'https://servicehub-strapi.herokuapp.com',
       error: null,
-      perPage: 6,
+      perPage: 4,
       currentPage: 1
     }
   },
@@ -386,7 +396,7 @@ export default {
       return this.macs.length
     }
   },
-  async mounted () {
+  async created () {
     try {
       const response = await this.$axios.get('https://servicehub-strapi.herokuapp.com/api/products?populate=*&filters[name][$startsWith]=iMac')
       this.macs = response.data.data
@@ -397,7 +407,9 @@ export default {
   methods: {
     ...mapMutations({
       addToCart: 'cart/add',
-      removeFromCart: 'cart/remove'
+      addToWishlist: 'wishlist/add',
+      removeFromCart: 'cart/remove',
+      removeFromWishlist: 'wishlist/remove'
     })
   }
 }

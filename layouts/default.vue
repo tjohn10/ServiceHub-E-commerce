@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <Header v-model="search" />
     <div>
       <!-- Page content -->
       <div class="main mt-4">
@@ -14,6 +14,11 @@
 <script>
 
 export default {
-  name: 'DefaultLayout'
+  name: 'DefaultLayout',
+  data () {
+    return {
+      search: ''
+    }
+  }
 }
 </script>

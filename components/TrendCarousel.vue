@@ -1,56 +1,19 @@
 <template>
-  <div class="container">
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="4000"
-      controls
-      indicators
-      background="#ababab"
-      img-width="1024"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333;"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <!-- Text slides with image -->
-      <b-carousel-slide
-        caption="First slide"
-        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        img-src="https://picsum.photos/1024/480/?image=52"
-      />
+  <no-ssr>
+    <CarouselComp :autoplay="true">
+      <img src="https://res.cloudinary.com/darapaudl/image/upload/v1653407159/small_iphone_11_pro_max_2_cb81cab0f0.jpg" alt="">
 
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-        <h1>Hello world!</h1>
-      </b-carousel-slide>
+      <img src="https://res.cloudinary.com/darapaudl/image/upload/v1653267284/Samsung_Galaxy_S20_Ultra_9a8794cdeb.webp" alt="">
 
-      <!-- Slides with image only -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58" />
+      <img src="https://res.cloudinary.com/darapaudl/image/upload/v1653266595/small_apple_macbook_pro_13_m1_8gb_512gb_ssd_laptop_cef3c11936.jpg" alt="">
 
-      <!-- Slides with img slot -->
-      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-      <b-carousel-slide>
-        <template #img>
-          <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
-            src="https://picsum.photos/1024/480/?image=55"
-            alt="image slot"
-          >
-        </template>
-      </b-carousel-slide>
+      <img src="https://res.cloudinary.com/darapaudl/image/upload/v1653343808/medium_series6_red_2c5dfd3a7e.webp" alt="">
 
-      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
-          a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
-        </p>
-      </b-carousel-slide>
-    </b-carousel>
-  </div>
+      <img src="https://res.cloudinary.com/darapaudl/image/upload/v1653267078/Beats_EP_On_Ear_Headphones_ce1cefa7d7.jpg" alt="">
+
+      <img src="https://res.cloudinary.com/darapaudl/image/upload/v1653267080/small_beatsbud_3_0bc7ab72c7.jpg" alt="">
+    </CarouselComp>
+  </no-ssr>
 </template>
 
 <script>
